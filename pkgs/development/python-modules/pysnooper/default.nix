@@ -6,13 +6,13 @@
 }:
 
 buildPythonPackage rec {
-  version = "0.4.1";
+  version = "0.5.0";
   pname = "pysnooper";
 
   src = fetchPypi {
     inherit version;
     pname = "PySnooper";
-    sha256 = "1xngly13x3ylwwcdml2ns8skpxip2myzavp3b9ff2dpqaalf0hdl";
+    sha256 = "ec3c4648dbe3bc848a0ecea5e2ffea3a5947797599afb627a68ac4e44454116b";
   };
 
   # test dependency python-toolbox fails with py27
