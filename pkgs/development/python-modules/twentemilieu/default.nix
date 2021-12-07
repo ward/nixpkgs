@@ -12,7 +12,7 @@
 
 buildPythonPackage rec {
   pname = "twentemilieu";
-  version = "0.4.2";
+  version = "0.5.0";
   format = "pyproject";
   disabled = pythonOlder "3.7";
 
@@ -20,7 +20,7 @@ buildPythonPackage rec {
     owner = "frenck";
     repo = "python-twentemilieu";
     rev = "v${version}";
-    sha256 = "1lf31ldbrsmxhbrcg284pwpvjfmwnssv3gqwd5vm2hvd9lwqn6ii";
+    sha256 = "0pa25zsz0wzn08ch7l67ibvzsjib71zpa4579lz2d2r83zx38x7c";
   };
 
   # coverage tests aren't useful when consuming releases
