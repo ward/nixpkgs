@@ -59,6 +59,9 @@ in mkDerivation rec {
     echo 'LIBUSB_INSTALL = ${libusb-compat-0_1}' >> src/gcconfig.pri
     echo 'LIBUSB_INCLUDE = ${libusb-compat-0_1.dev}/include' >> src/gcconfig.pri
     echo 'LIBUSB_LIBS = -L${libusb-compat-0_1}/lib -lusb' >> src/gcconfig.pri
+    echo 'DEFINES += GC_VERSION=\\\"v${version}\\\"' >> src/gcconfig.pri
+    sed -i "s|#\(CONFIG += release.*\)|\1 static|" src/gcconfig.pri
+    sed -i "s|^#QMAKE_CXXFLAGS|QMAKE_CXXFLAGS|" src/gcconfig.pri
     sed -i -e '21,23d' qwt/qwtconfig.pri # Removed forced installation to /usr/local
   '';
 
