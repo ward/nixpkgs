@@ -1,0 +1,12 @@
+diff --git a/src/Python/SIP/sipAPIgoldencheetah.h b/src/Python/SIP/sipAPIgoldencheetah.h
+index 036a07cea..e40b23d55 100644
+--- a/src/Python/SIP/sipAPIgoldencheetah.h
++++ b/src/Python/SIP/sipAPIgoldencheetah.h
+@@ -8,6 +8,7 @@
+ #define _goldencheetahAPI_H
+ 
+ #include <sip.h>
++#define SIP_MODULE_NAME "sip-module"
+ 
+ /*
+  * Convenient names to refer to various strings defined in this module.

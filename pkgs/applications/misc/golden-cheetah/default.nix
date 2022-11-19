@@ -2,6 +2,7 @@
 , qtbase, qtsvg, qtserialport, qtwebengine, qtmultimedia, qttools
 , qtconnectivity, qtcharts, libusb-compat-0_1, gsl, blas
 , bison, flex, zlib, qmake, makeDesktopItem, makeWrapper
+, python39Full, python39Packages
 }:
 
 let
@@ -25,6 +26,7 @@ in mkDerivation rec {
     sha256 = "0r2yafqfamvm5wpy5zm5jnzjbllrs76xbbavxfsdppq4h42qndn3";
   };
 
+  # runtime?
   buildInputs = [
     qtbase
     qtsvg
@@ -38,7 +40,10 @@ in mkDerivation rec {
     libusb-compat-0_1
     gsl
     blas
+    python39Full
+    python39Packages.sip_4
   ];
+  # build time?
   nativeBuildInputs = [ flex makeWrapper qmake bison ];
 
   patches = [
@@ -46,6 +51,11 @@ in mkDerivation rec {
     # Included in https://github.com/GoldenCheetah/GoldenCheetah/pull/3590,
     # which is periodically rebased but pre 3.6 release, as it'll break other CI systems
     ./0001-Fix-building-with-bison-3.7.patch
+    # The sip 4.x available in nixpkgs (4.19.25) is more recent than the one
+    # used by GoldenCheetah (4.19.8). It seems to have removed a #define
+    # SIP_MODULE_NAME that GoldenCheetah was relying on. Instead add it
+    # ourselves with as value the value given to it by sip's nixpkgs build.
+    ./0002-fix-sip-version-difference.patch
   ];
 
   NIX_LDFLAGS = "-lz -lgsl -lblas";
@@ -63,7 +73,12 @@ in mkDerivation rec {
     sed -i "s|#\(CONFIG += release.*\)|\1 static|" src/gcconfig.pri
     sed -i "s|^#QMAKE_CXXFLAGS|QMAKE_CXXFLAGS|" src/gcconfig.pri
     sed -i -e '21,23d' qwt/qwtconfig.pri # Removed forced installation to /usr/local
+    echo 'DEFINES += GC_WANT_PYTHON' >> src/gcconfig.pri
+    echo 'PYTHONINCLUDES = -I${python39Full}/include/python3.9 -I${python39Packages.sip_4}/include' >> src/gcconfig.pri
+    echo 'PYTHONLIBS = -L${python39Full}/lib/python3.9/config-3.9-x86_64-linux-gnu -llibpython3.9.a' >> src/gcconfig.pri
   '';
+    # Getting error about not finding python3.9m, so adding its include folder explicitly in PYTHONLIBS too
+    #echo 'PYTHONLIBS = -L${python39Full}/lib/python3.9/config-3.9-x86_64-linux-gnu -lpython3.9m' >> src/gcconfig.pri
 
   installPhase = ''
     runHook preInstall

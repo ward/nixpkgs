@@ -1,0 +1,16 @@
+Trying to get python to work in goldencheetah.
+
+- Added python 3.8 because 3.7 did not have sip any more.
+- Added 3.8's sip_4 and added the necessary includes.
+
+Building seems to go fine now, no complaints about not finding `*.h` files, buuuuuut
+
+the build fails due to some SIP_MODULE_NAME mentions for which it doesn't know
+what they are. The exact same code (presumably) does seem to work in their
+travis build, so I guess I am forgetting some configuration setting or maybe
+something from SIP usage. Note that their travis script has a python
+configure.py, is there a chance that edits python include files and creates the
+relevant file for sip stuff which in turn also defines that preprocessor
+(presumably) variable?
+
+Find out next time on... compiling goldencheetah!
